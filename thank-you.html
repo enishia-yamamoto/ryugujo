@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>月額プラン - 購入完了</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .main-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .payment-header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 40px 0;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+    .payment-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: normal;
+    }
+    .payment-header .japanese {
+      font-size: 32px;
+      margin-top: 10px;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    h1 {
+      color: #e15b31;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 18px;
+      margin: 20px 0;
+    }
+    button {
+      background-color: #e15b31;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #c14a28;
+    }
+    .icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: #e15b31;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-header">
+    <h2>payment</h2>
+    <div class="japanese">決済</div>
+  </div>
+
+  <div class="main-content">
+    <div class="container">
+      <div class="icon">✓</div>
+      <h1>購入完了</h1>
+      <p>月額プランの購入手続きが正常に完了しました。</p>
+      <p>ご契約いただきありがとうございます。</p>
+      <button id="closeButton">このウィンドウを閉じる</button>
+    </div>
+  </div>
+
+  <script>
+    function closeWindow() {
+      if (window.opener && !window.opener.closed) {
+        try {
+          window.opener.postMessage('checkout_complete', '*');
+        } catch (e) {
+          console.error('親ウィンドウへの通知失敗:', e);
+        }
+      }
+      window.close();
+    }
+
+    document.getElementById('closeButton').addEventListener('click', closeWindow);
+
+    function cleanUrl() {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('checkout_result');
+      url.searchParams.delete('t');
+      window.history.replaceState({}, document.title, url.pathname + url.search);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      cleanUrl();
+    });
+  </script>
+</body>
+</html>

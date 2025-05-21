@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>サブスクリプション管理 - 完了</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .main-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .payment-header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 40px 0;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+    .payment-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: normal;
+    }
+    .payment-header .japanese {
+      font-size: 32px;
+      margin-top: 10px;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    h1 {
+      color: #e15b31;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 18px;
+      margin: 20px 0;
+    }
+    button {
+      background-color: #e15b31;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #c14a28;
+    }
+    .icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: #e15b31;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-header">
+    <h2>portal</h2>
+    <div class="japanese">ポータル</div>
+  </div>
+
+  <div class="main-content">
+    <div class="container">
+      <div class="icon">✓</div>
+      <h1>サブスクリプション管理完了</h1>
+      <p>サブスクリプション管理画面での操作が完了しました。</p>
+      <p>ご変更ありがとうございました。</p>
+      <button id="closeButton">このウィンドウを閉じる</button>
+    </div>
+  </div>
+
+  <script>
+    function closeWindow() {
+      // 親ウィンドウへ通知
+      if (window.opener && !window.opener.closed) {
+        try {
+          window.opener.postMessage('portal_return', '*');
+        } catch (e) {
+          console.error('親ウィンドウへの通知失敗:', e);
+        }
+      }
+      window.close();
+    }
+
+    document.getElementById('closeButton').addEventListener('click', closeWindow);
+
+    // URLパラメータを削除
+    function cleanUrl() {
+      const url = new URL(window.location.href);
+      url.searchParams.clear();
+      window.history.replaceState({}, document.title, url.pathname);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      cleanUrl();
+    });
+  </script>
+</body>
+</html>
